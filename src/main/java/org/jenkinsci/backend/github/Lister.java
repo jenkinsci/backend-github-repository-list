@@ -10,6 +10,7 @@ import org.kohsuke.github.GHOrganization;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Collections;
 
@@ -27,7 +28,7 @@ public class Lister {
         for (GHRepository r : org.getRepositories().values()) {
             System.out.printf("|[%s|%s]|%s|",
                     r.getName(),r.getUrl(),
-                    r.getDescription());
+                    " "+r.getDescription()); // '||' is interpreted as TH
 
             try {
                 URL pom = new URL(r.getUrl() + "/raw/master/pom.xml");
@@ -38,7 +39,11 @@ public class Lister {
 
                 System.out.printf("%s|%s|", groupId.getTextTrim(), artifactId.getTextTrim());
             } catch (DocumentException e) {
-                e.printStackTrace();
+                if (e.getNestedException() instanceof FileNotFoundException) {
+                    // no POM
+                } else {
+                    e.printStackTrace();
+                }
             }
 
             System.out.println();
