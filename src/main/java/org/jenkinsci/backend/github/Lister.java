@@ -63,7 +63,7 @@ public class Lister {
         DocumentFactory factory = new DocumentFactory();
         factory.setXPathNamespaceURIs(Collections.singletonMap("m","http://maven.apache.org/POM/4.0.0"));
 
-        GitHub gh = GitHub.connect();
+        GitHub gh = GitHub.connectAnonymously();
         GHOrganization org = gh.getOrganization("jenkinsci");
 
         out.println(
