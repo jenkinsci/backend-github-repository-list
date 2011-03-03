@@ -73,9 +73,11 @@ public class Lister {
                 "||Repository||description||groupId||artifactId||");
 
         for (GHRepository r : org.getRepositories().values()) {
+            String desc = r.getDescription();
+            if (desc == null) desc = "";
             out.printf("|[%s|%s]| %s|", // Space before %s to ensure no "||" (makes TH)
                     r.getName(),r.getUrl(),
-                    r.getDescription().replace("[", "\\[")); // Escape [ to avoid wiki links
+                    desc.replace("[", "\\[")); // Escape [ to avoid wiki links
 
             try {
                 URL pom = new URL(r.getUrl() + "/raw/master/pom.xml");
