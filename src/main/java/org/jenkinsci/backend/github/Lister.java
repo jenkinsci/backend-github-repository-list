@@ -102,7 +102,7 @@ public class Lister {
 
         if (wikiPage!=null) {
             System.err.println("Uploading to "+wikiPage);
-            ConfluenceSoapService service = Confluence.connect(new URL("http://wiki.jenkins-ci.org/"));
+            ConfluenceSoapService service = Confluence.connect(new URL("https://wiki.jenkins-ci.org/"));
 
             Properties props = new Properties();
             File credential = new File(new File(System.getProperty("user.home")), ".jenkins-ci.org");
