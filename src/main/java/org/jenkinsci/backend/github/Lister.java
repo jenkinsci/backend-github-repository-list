@@ -67,7 +67,7 @@ public class Lister {
         GHOrganization org = gh.getOrganization("jenkinsci");
 
         out.println(
-                "!https://github.com/images/modules/header/logov3.png|align=left,hspace=30,vspace=30! " +
+                "!https://raw.github.com/github/media/master/logos/github_logo_social_coding_outlined.png|align=left,hspace=30,vspace=30! " +
                 "This auto-generated page lists all the GitHub repositories of the Jenkins project.\n" +
                 "\n" +
                 "||Repository||description||groupId||artifactId||");
