@@ -31,6 +31,8 @@
           <arguments>
             <argument>-wiki</argument>
             <argument>GitHub Repositories</argument>
+            <argument>-l</argument>
+            <argument>target/repositories.txt</argument>
           </arguments>
         </configuration>
       </plugin>
