@@ -2,6 +2,7 @@ package org.jenkinsci.backend.github;
 
 import hudson.plugins.jira.soap.ConfluenceSoapService;
 import hudson.plugins.jira.soap.RemotePage;
+import org.apache.commons.io.output.NullWriter;
 import org.apache.commons.io.output.TeeOutputStream;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -22,8 +23,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Properties;
@@ -37,6 +40,9 @@ public class Lister {
 
     @Option(name="-o",usage="Output the list to the given file")
     public File output;
+
+    @Option(name="-l",usage="Output a simple text file that lists all the repositories")
+    public File simpleList;
 
     public static void main(String[] args) throws Exception {
         Lister app = new Lister();
@@ -58,6 +64,10 @@ public class Lister {
         if (output!=null)
             out = new PrintStream(new FileOutputStream(output));
 
+        PrintWriter list = new PrintWriter(new NullWriter());
+        if (simpleList!=null)
+            list = new PrintWriter(new FileWriter(simpleList));
+
         out = new PrintStream(new TeeOutputStream(out,contents));
 
         DocumentFactory factory = new DocumentFactory();
@@ -73,6 +83,7 @@ public class Lister {
                 "||Repository||description||groupId||artifactId||");
 
         for (GHRepository r : org.getRepositories().values()) {
+            list.println(r.getName());
             String desc = r.getDescription();
             if (desc == null) desc = "";
             out.printf("|[%s|%s]| %s|", // Space before %s to ensure no "||" (makes TH)
@@ -99,6 +110,7 @@ public class Lister {
         }
 
         out.flush();
+        list.flush();
 
         if (wikiPage!=null) {
             System.err.println("Uploading to "+wikiPage);
